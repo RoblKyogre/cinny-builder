@@ -16,7 +16,7 @@ jobs:
     name: Build and Publish Image
     steps:
       - name: Clone cinny
-        run: git clone -b master https://github.com/cinnyapp/cinny.git .
+        run: git clone -b dev https://github.com/cinnyapp/cinny.git .
       - name: Build cinny
         run: |
           docker build -t cinny:latest .
