@@ -15,17 +15,11 @@ jobs:
       packages: write
     name: Build and Publish Image
     steps:
-      - name: Clone ldap-overleaf-sl
-        run: git clone -b master https://github.com/smhaller/ldap-overleaf-sl.git .
-      - name: Patch PR 43
+      - name: Clone cinny
+        run: git clone -b master https://github.com/cinnyapp/cinny.git .
+      - name: Build cinny
         run: |
-          wget -O 43.diff https://patch-diff.githubusercontent.com/raw/smhaller/ldap-overleaf-sl/pull/43.diff
-          git apply 43.diff
-      - name: Build ldap-overleaf-sl
-        run: |
-          bash scripts/extract_files.sh 4.2.0
-          bash scripts/apply_diffs.sh
-          make
+          docker build -t cinny:latest .
       - name: Log into github registry
         if: github.event_name != 'pull_request'
         uses: docker/login-action@v3
@@ -35,5 +29,5 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Tag and push image
         run: |
-          docker tag ldap-overleaf-sl ghcr.io/roblkyogre/ldap-overleaf-sl:latest
-          docker push ghcr.io/roblkyogre/ldap-overleaf-sl:latest
+          docker tag cinny:latest ghcr.io/roblkyogre/cinny:latest
+          docker push ghcr.io/roblkyogre/cinny:latest
